@@ -1,7 +1,6 @@
 package com.defaultapps.preferenceshelperexample;
 
 import android.app.Application;
-import android.content.ContextWrapper;
 
 import com.defaultapps.preferenceshelper.PreferencesHelper;
 
