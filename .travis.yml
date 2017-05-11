@@ -47,9 +47,7 @@ script:
 #    - adb shell input keyevent 82 &
 #    - ./gradlew connectedCheck coveralls -PdisablePreDex --stacktrace
     - ./gradlew -q -p app build
-    - ./gradlew -q -p app test
     - ./gradlew -q -p preferenceshelper build
-    - ./gradlew -q -p preferenceshelper test
 
 before_install:
     - pip install --user codecov    #Install codecov

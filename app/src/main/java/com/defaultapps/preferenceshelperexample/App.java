@@ -10,7 +10,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        new PreferencesHelper.Builder(getApplicationContext())
+        new PreferencesHelper.Builder(this)
                 .build();
     }
 }
