@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/PreferencesHelper.iml" filepath="$PROJECT_DIR$/PreferencesHelper.iml" />
       <module fileurl="file://$PROJECT_DIR$/PreferencesHelperExample.iml" filepath="$PROJECT_DIR$/PreferencesHelperExample.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/preferenceshelper/preferenceshelper.iml" filepath="$PROJECT_DIR$/preferenceshelper/preferenceshelper.iml" />

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import java.util.HashSet;
@@ -16,7 +17,11 @@ public class PreferencesHelper {
     private static PreferencesHelper instance;
 
     private PreferencesHelper(Builder builder) {
-        sharedPreferences = builder.context.getSharedPreferences(builder.name, builder.mode);
+        if (builder.name == null || builder.mode == -1) {
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(builder.context);
+        } else {
+            sharedPreferences = builder.context.getSharedPreferences(builder.name, builder.mode);
+        }
     }
 
     private static void createInstance(Builder builder) {
@@ -124,10 +129,10 @@ public class PreferencesHelper {
         }
 
         public void build() {
-            if (name == null) {
+            if (name == null && mode != -1) {
                 name = context.getPackageName();
             }
-            if (mode == -1) {
+            if (mode == -1 && name != null) {
                 mode = ContextWrapper.MODE_PRIVATE;
             }
             PreferencesHelper.createInstance(this);
