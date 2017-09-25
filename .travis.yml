@@ -52,11 +52,9 @@ script:
     - ./gradlew -q -p preferenceshelper assembleRelease
     - ./gradlew -q -p preferenceshelper assembleDebug
     - ./gradlew -q -p preferenceshelper test
-
-before_install:
-    - pip install --user codecov    #Install codecov
+    - ./gradlew -q -p preferenceshelper jacocoTestReport
 
 after_success:
-    - codecov                       #Run codecov
+  - bash <(curl -s https://codecov.io/bash)
 
 after_failure: "cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml"

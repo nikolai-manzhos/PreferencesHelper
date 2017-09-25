@@ -18,7 +18,7 @@ public class PreferencesHelper {
     static PreferencesHelper instance;
 
     private PreferencesHelper(Builder builder) {
-        if (builder.name == null || builder.mode == -1) {
+        if (builder.name == null && builder.mode == -1) {
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(builder.context);
         } else {
             sharedPreferences = builder.context.getSharedPreferences(builder.name, builder.mode);

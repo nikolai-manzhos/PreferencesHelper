@@ -19,7 +19,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
             '**/Dagger*.*'
     ]
 
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug/com/example", excludes: fileFilter)
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
 
     sourceDirectories = files([mainSrc])

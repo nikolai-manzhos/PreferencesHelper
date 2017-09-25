@@ -73,6 +73,14 @@ public class PreferencesHelperTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
+    public void shouldSetAllModes() {
+        constructPreferencesHelperWithMode(ContextWrapper.MODE_WORLD_READABLE);
+        constructPreferencesHelperWithMode(ContextWrapper.MODE_WORLD_WRITEABLE);
+        constructPreferencesHelperWithMode(ContextWrapper.MODE_MULTI_PROCESS);
+    }
+
+    @Test
     public void initWithDefaultMode() {
         final String SP_NAME = "test_sp";
         PreferencesHelper
@@ -136,5 +144,12 @@ public class PreferencesHelperTest {
 
         assertEquals(TEST_SET, preferencesHelper.getStringSet(TEST_SET_KEY));
         assertEquals(TEST_SET, preferencesHelper.getStringSet(TEST_SET_KEY, TEST_DEFAULT_SET));
+    }
+
+    private void constructPreferencesHelperWithMode(int mode) {
+        PreferencesHelper
+                .builder(RuntimeEnvironment.application.getApplicationContext())
+                .setMode(mode)
+                .build();
     }
 }
