@@ -10,11 +10,12 @@ import android.support.annotation.NonNull;
 import java.util.HashSet;
 import java.util.Set;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class PreferencesHelper {
 
     private SharedPreferences sharedPreferences;
 
-    private static PreferencesHelper instance;
+    static PreferencesHelper instance;
 
     private PreferencesHelper(Builder builder) {
         if (builder.name == null || builder.mode == -1) {
@@ -24,11 +25,16 @@ public class PreferencesHelper {
         }
     }
 
+    public static PreferencesHelper.Builder builder(@NonNull Context context) {
+        if (!(context instanceof Application)) throw new IllegalArgumentException("Provide application context");
+        return new PreferencesHelper.Builder(context);
+    }
+
     private static void createInstance(Builder builder) {
         instance = new PreferencesHelper(builder);
     }
 
-    public static PreferencesHelper getInstance() {
+    static PreferencesHelper getInstance() {
         if (instance == null) {
             throw new RuntimeException("Init PreferenceHelper on Application class in onCreate() method.");
         }
@@ -100,17 +106,13 @@ public class PreferencesHelper {
         e.putStringSet(key, value).apply();
     }
 
-
     public static class Builder {
 
         private Context context;
         private String name;
         private int mode = -1;
 
-        public Builder(@NonNull Context context) {
-            if (!(context instanceof Application)) {
-                throw new IllegalArgumentException("Please supply application context");
-            }
+        private Builder(@NonNull Context context) {
             this.context = context;
         }
 
@@ -119,7 +121,8 @@ public class PreferencesHelper {
             return this;
         }
 
-        public Builder setMode(@NonNull int mode) {
+        @SuppressWarnings("deprecation")
+        public Builder setMode(int mode) {
             if (mode == ContextWrapper.MODE_PRIVATE || mode == ContextWrapper.MODE_WORLD_READABLE || mode == ContextWrapper.MODE_WORLD_WRITEABLE || mode == ContextWrapper.MODE_MULTI_PROCESS) {
                 this.mode = mode;
             } else {
