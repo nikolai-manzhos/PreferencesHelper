@@ -16,8 +16,8 @@ android:
     components:
         - platform-tools
         - tools
-        - build-tools-25.0.2
-        - android-25
+        - build-tools-26.0.1
+        - android-26
 
         # Additional components
         - extra-google-google_play_services
@@ -46,13 +46,15 @@ script:
 #    - adb devices   #Display list of devices
 #    - adb shell input keyevent 82 &
 #    - ./gradlew connectedCheck coveralls -PdisablePreDex --stacktrace
-    - ./gradlew -q -p app build
-    - ./gradlew -q -p preferenceshelper build
-
-before_install:
-    - pip install --user codecov    #Install codecov
+    - ./gradlew -q -p app clean
+    - ./gradlew -q -p app assembleDebug
+    - ./gradlew -q -p preferenceshelper clean
+    - ./gradlew -q -p preferenceshelper assembleRelease
+    - ./gradlew -q -p preferenceshelper assembleDebug
+    - ./gradlew -q -p preferenceshelper test
+    - ./gradlew -q -p preferenceshelper jacocoTestReport
 
 after_success:
-    - codecov                       #Run codecov
+  - bash <(curl -s https://codecov.io/bash)
 
 after_failure: "cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml"

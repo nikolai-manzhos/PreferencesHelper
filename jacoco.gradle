@@ -1,0 +1,36 @@
+task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports"
+
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    // Exclude Dagger 2 and other generated code
+    def fileFilter = [
+            '**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*',
+            '**/*_*Factory*.*',
+            '**/*_Module*.*',
+            '**/*_ViewBinding*.*',
+            '**/*_MembersInjector*.*',
+            '**/*_Provide*.*',
+            '**/Dagger*.*'
+    ]
+
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = files([
+            "${buildDir}/jacoco/testDebugUnitTest.exec",
+            fileTree(dir: "${buildDir}/outputs/code-coverage/connected/").matching {
+                include '*.ec'
+            }
+    ])
+
+    // Always regenerate report
+    outputs.upToDateWhen { false }
+}

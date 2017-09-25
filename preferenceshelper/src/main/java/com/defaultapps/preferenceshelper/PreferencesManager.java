@@ -1,14 +1,17 @@
 package com.defaultapps.preferenceshelper;
 
+import android.support.annotation.VisibleForTesting;
 
+@SuppressWarnings("WeakerAccess")
 public class PreferencesManager {
     private PreferencesHelper preferencesHelper;
 
-    protected PreferencesManager() {
+    PreferencesManager() {
         preferencesHelper = PreferencesHelper.getInstance();
     }
 
-    protected PreferencesHelper getPreferencesHelper() {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    public PreferencesHelper getPreferencesHelper() {
         return preferencesHelper;
     }
 }
