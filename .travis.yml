@@ -16,17 +16,12 @@ android:
     components:
         - platform-tools
         - tools
-        - build-tools-26.0.1
-        - android-26
+        - build-tools-27.0.0
+        - android-27
 
         # Additional components
-        - extra-google-google_play_services
         - extra-google-m2repository
         - extra-android-m2repository
-
-        #system images
-#        - sys-img-armeabi-v7a-android-19
-#        - sys-img-armeabi-v7a-android-21
 
 licenses:
     - 'android-sdk-preview-license-52d11cd2'
@@ -35,17 +30,10 @@ licenses:
 
 before_script:
     - chmod +x gradlew      #Grand permissions
-#    - android list targets
-#    - echo no | android create avd --force --name test --target $ANDROID_TARGET --abi $ANDROID_ABI    #Create AVD for given api
-#    - emulator -avd test -no-skin -no-audio -no-window &    #Start emulator
 
 script:
     - echo "Travis branch is $TRAVIS_BRANCH"
     - echo "Travis branch is in pull request $TRAVIS_PULL+REQUEST"
-#    - android-wait-for-emulator
-#    - adb devices   #Display list of devices
-#    - adb shell input keyevent 82 &
-#    - ./gradlew connectedCheck coveralls -PdisablePreDex --stacktrace
     - ./gradlew -q -p app clean
     - ./gradlew -q -p app assembleDebug
     - ./gradlew -q -p preferenceshelper clean

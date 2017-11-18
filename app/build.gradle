@@ -20,10 +20,10 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:$support"
-    compile project (':preferenceshelper')
+    implementation "com.android.support:appcompat-v7:$support"
+    api project (':preferenceshelper')
 
-    testCompile "junit:junit:$junit"
-    testCompile "org.mockito:mockito-core:$mockito"
-    testCompile "org.robolectric:robolectric:$robolectric"
+    testImplementation "junit:junit:$junit"
+    testImplementation "org.mockito:mockito-core:$mockito"
+    testImplementation "org.robolectric:robolectric:$robolectric"
 }
