@@ -10,7 +10,9 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
@@ -144,6 +146,20 @@ public class PreferencesHelperTest {
 
         assertEquals(TEST_SET, preferencesHelper.getStringSet(TEST_SET_KEY));
         assertEquals(TEST_SET, preferencesHelper.getStringSet(TEST_SET_KEY, TEST_DEFAULT_SET));
+    }
+
+    @Test
+    public void shouldPutStringList() {
+        final String TEST_LIST_KEY = "p_test_list";
+        final List<String> TEST_LIST = new ArrayList<>();
+        TEST_LIST.add("One;");
+        TEST_LIST.add("Two");
+        TEST_LIST.add("Three\"");
+        final List<String> TEST_DEFAULT_LIST = new ArrayList<>();
+        preferencesHelper.putStringList(TEST_LIST_KEY, TEST_LIST);
+
+        assertEquals(TEST_LIST, preferencesHelper.getStringList(TEST_LIST_KEY, TEST_DEFAULT_LIST));
+        assertEquals(TEST_LIST, preferencesHelper.getStringList(TEST_LIST_KEY));
     }
 
     private void constructPreferencesHelperWithMode(int mode) {
