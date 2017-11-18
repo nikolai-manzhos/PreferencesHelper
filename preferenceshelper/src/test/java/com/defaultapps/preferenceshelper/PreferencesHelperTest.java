@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
@@ -160,6 +161,12 @@ public class PreferencesHelperTest {
 
         assertEquals(TEST_LIST, preferencesHelper.getStringList(TEST_LIST_KEY, TEST_DEFAULT_LIST));
         assertEquals(TEST_LIST, preferencesHelper.getStringList(TEST_LIST_KEY));
+    }
+
+    @Test
+    public void shouldReturnDefaultOnEmptyData() {
+        final String TEST_LIST_KEY = "p_test_list";
+        assertNotNull(preferencesHelper.getStringList(TEST_LIST_KEY));
     }
 
     private void constructPreferencesHelperWithMode(int mode) {
