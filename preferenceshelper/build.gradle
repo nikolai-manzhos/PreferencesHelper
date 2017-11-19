@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 3
-        versionName "2.1"
+        versionCode versionCode
+        versionName releaseVersion
     }
     buildTypes {
         release {
@@ -30,3 +30,6 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$mockito"
     testImplementation "org.robolectric:robolectric:$robolectric"
 }
+
+apply from: "$rootDir/upload.gradle"
+

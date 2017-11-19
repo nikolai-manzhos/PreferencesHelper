@@ -6,6 +6,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
     }
 }
 
@@ -22,6 +24,9 @@ task clean(type: Delete) {
 }
 
 ext {
+    versionCode = 3
+    releaseVersion = "2.1"
+
     junit = '4.12'
     mockito = '1.10.19'
     robolectric = '3.3.2'
