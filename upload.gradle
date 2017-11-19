@@ -1,6 +1,20 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: "com.jfrog.bintray"
 
+def authorEmail
+def userBintray
+def keyBintray
+
+task provideCredentials {
+    doLast {
+        authorEmail = System.getProperty("BINTRAY_EMAIL")
+        userBintray = System.getProperty("BINTRAY_USER")
+        keyBintray = System.getProperty("BINTRAY_KEY")
+    }
+}
+
+bintrayUpload.dependsOn provideCredentials
+
 version = releaseVersion
 def siteUrl = 'https://github.com/NikolayManzhos/PreferencesHelper'      // Homepage URL of the library
 def gitUrl = 'https://github.com/NikolayManzhos/PreferencesHelper.git'   // Git repository URL
@@ -13,7 +27,6 @@ install {
             project {
                 packaging 'aar'
 
-                // Add your description here
                 name 'Preferences Helper'
                 description = 'Shared Preferences wrapper for Android.'
                 url siteUrl
@@ -29,7 +42,7 @@ install {
                     developer {
                         id 'nikolaymanzhos'
                         name 'Nikolay Manzhos'
-                        email System.getenv("BINTRAY_EMAIL")
+                        email authorEmail
                     }
                 }
                 scm {
@@ -63,13 +76,12 @@ artifacts {
 
 // https://github.com/bintray/gradle-bintray-plugin
 bintray {
-    user = System.getenv("BINTRAY_USER")
-    key = System.getenv("BINTRAY_KEY")
+    user = userBintray
+    key = keyBintray
 
     configurations = ['archives']
     pkg {
         repo = "maven"
-        // it is the name that appears in bintray when logged
         name = "preferences-helper"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
