@@ -1,5 +1,6 @@
 package com.defaultapps.preferenceshelper;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -7,7 +8,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
@@ -106,6 +109,49 @@ public class PreferencesHelper {
         e.putStringSet(key, value).apply();
     }
 
+    public void putStringList(String key, List<String> value) {
+        StringBuilder sb = new StringBuilder();
+        int size = value.size();
+
+        for (int i=0; i < size-1; i++) {
+            byte[] bytes = value.get(i).getBytes();
+            sb.append(convertBytesToHex(bytes)).append(";");
+        }
+        byte[] bytes = value.get(size - 1).getBytes();
+        sb.append(convertBytesToHex(bytes));
+        putString(key, sb.toString());
+    }
+
+    public List<String> getStringList(String key, List<String> defaultValue) {
+        String listString = getString(key, null);
+        if (listString == null) return defaultValue;
+
+        final List<String> resultList = new ArrayList<>();
+        String[] hexStrings = listString.split(";");
+        for (String s: hexStrings) {
+            int len = s.length();
+            byte[] data = new byte[len/2];
+            for (int i=0; i < len; i+=2) {
+                data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                        + Character.digit(s.charAt(i+1), 16));
+            }
+            resultList.add(new String(data));
+        }
+        return resultList;
+    }
+
+    public List<String> getStringList(String key) {
+        return getStringList(key, new ArrayList<String>());
+    }
+
+    String convertBytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (Byte item: bytes) {
+            sb.append(String.format("%02x", item));
+        }
+        return sb.toString();
+    }
+
     public static class Builder {
 
         private Context context;
@@ -121,9 +167,13 @@ public class PreferencesHelper {
             return this;
         }
 
+        @SuppressLint({"WorldReadableFiles", "WorldWriteableFiles"})
         @SuppressWarnings("deprecation")
         public Builder setMode(int mode) {
-            if (mode == ContextWrapper.MODE_PRIVATE || mode == ContextWrapper.MODE_WORLD_READABLE || mode == ContextWrapper.MODE_WORLD_WRITEABLE || mode == ContextWrapper.MODE_MULTI_PROCESS) {
+            if (mode == ContextWrapper.MODE_PRIVATE
+                    || mode == ContextWrapper.MODE_WORLD_READABLE
+                    || mode == ContextWrapper.MODE_WORLD_WRITEABLE
+                    || mode == ContextWrapper.MODE_MULTI_PROCESS) {
                 this.mode = mode;
             } else {
                 throw new IllegalArgumentException("Mode should be one of these: ContextWrapper.MODE_PRIVATE, ContextWrapper.MODE_WORLD_READABLE, ContextWrapper.MODE_WORLD_WRITEABLE, ContextWrapper.MODE_MULTI_PROCESS");
