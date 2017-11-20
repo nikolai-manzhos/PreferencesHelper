@@ -20,6 +20,9 @@ public class PreferencesHelper {
 
     static PreferencesHelper instance;
 
+    private static String NULL_STRING = "null";
+    private static String EMPTY_STRING = "empty";
+
     private PreferencesHelper(Builder builder) {
         if (builder.name == null && builder.mode == -1) {
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(builder.context);
@@ -110,14 +113,19 @@ public class PreferencesHelper {
     }
 
     public void putStringList(String key, List<String> value) {
+        if (value.isEmpty()) {
+            putString(key, null);
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         int size = value.size();
 
         for (int i=0; i < size-1; i++) {
-            byte[] bytes = value.get(i).getBytes();
+            String stringValue = value.get(i);
+            byte[] bytes = convertStringToBytesArray(stringValue);
             sb.append(convertBytesToHex(bytes)).append(";");
         }
-        byte[] bytes = value.get(size - 1).getBytes();
+        byte[] bytes = convertStringToBytesArray(value.get(size - 1));
         sb.append(convertBytesToHex(bytes));
         putString(key, sb.toString());
     }
@@ -135,7 +143,10 @@ public class PreferencesHelper {
                 data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
                         + Character.digit(s.charAt(i+1), 16));
             }
-            resultList.add(new String(data));
+            String resultString = new String(data);
+            if (resultString.equals(NULL_STRING)) resultString = null;
+            else if (resultString.equals(EMPTY_STRING)) resultString = "";
+            resultList.add(resultString);
         }
         return resultList;
     }
@@ -150,6 +161,18 @@ public class PreferencesHelper {
             sb.append(String.format("%02x", item));
         }
         return sb.toString();
+    }
+
+    byte[] convertStringToBytesArray(String value) {
+        byte[] bytes;
+        if (value == null) {
+            bytes = NULL_STRING.getBytes();
+        } else if (value.equals("")) {
+            bytes = EMPTY_STRING.getBytes();
+        } else {
+            bytes = value.getBytes();
+        }
+        return bytes;
     }
 
     public static class Builder {

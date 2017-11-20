@@ -156,6 +156,20 @@ public class PreferencesHelperTest {
         TEST_LIST.add("One;");
         TEST_LIST.add("Two");
         TEST_LIST.add("Three\"");
+        TEST_LIST.add("");
+        TEST_LIST.add(null);
+        TEST_LIST.add(" ");
+        final List<String> TEST_DEFAULT_LIST = new ArrayList<>();
+        preferencesHelper.putStringList(TEST_LIST_KEY, TEST_LIST);
+
+        assertEquals(TEST_LIST, preferencesHelper.getStringList(TEST_LIST_KEY, TEST_DEFAULT_LIST));
+        assertEquals(TEST_LIST, preferencesHelper.getStringList(TEST_LIST_KEY));
+    }
+
+    @Test
+    public void shouldPutEmptyStringList() {
+        final String TEST_LIST_KEY = "p_test_list";
+        final List<String> TEST_LIST = new ArrayList<>();
         final List<String> TEST_DEFAULT_LIST = new ArrayList<>();
         preferencesHelper.putStringList(TEST_LIST_KEY, TEST_LIST);
 
