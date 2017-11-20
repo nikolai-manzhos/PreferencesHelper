@@ -23,8 +23,8 @@ task clean(type: Delete) {
 }
 
 ext {
-    versionCode = 4
-    releaseVersion = "2.2"
+    versionCode = 5
+    releaseVersion = "2.3"
 
     junit = '4.12'
     mockito = '1.10.19'

@@ -113,6 +113,10 @@ public class PreferencesHelper {
     }
 
     public void putStringList(String key, List<String> value) {
+        if (value.isEmpty()) {
+            putString(key, null);
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         int size = value.size();
 
