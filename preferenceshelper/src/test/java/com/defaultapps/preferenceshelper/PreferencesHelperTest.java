@@ -2,6 +2,7 @@ package com.defaultapps.preferenceshelper;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.SharedPreferences;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
@@ -181,6 +183,36 @@ public class PreferencesHelperTest {
     public void shouldReturnDefaultOnEmptyData() {
         final String TEST_LIST_KEY = "p_test_list";
         assertNotNull(preferencesHelper.getStringList(TEST_LIST_KEY));
+    }
+
+    @Test
+    public void shouldSetOnSharedPreferenceChangeListener() {
+        final String ANY_KEY = "p_test";
+        preferencesHelper.setOnSharedPreferencesChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+                assertEquals(ANY_KEY, s);
+            }
+        });
+
+        final String ANY_VALUE = "test";
+        preferencesHelper.putString(ANY_KEY, ANY_VALUE);
+    }
+
+    @Test
+    public void shouldRemoveOnSharedPreferenceChangeListener() {
+        final String ANY_KEY = "p_test";
+        SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+                fail("This method should not be invoked");
+            }
+        };
+        preferencesHelper.setOnSharedPreferencesChangeListener(listener);
+        preferencesHelper.removeOnSharedPreferencesChangeListener(listener);
+
+        final String ANY_VALUE = "test";
+        preferencesHelper.putString(ANY_KEY, ANY_VALUE);
     }
 
     private void constructPreferencesHelperWithMode(int mode) {

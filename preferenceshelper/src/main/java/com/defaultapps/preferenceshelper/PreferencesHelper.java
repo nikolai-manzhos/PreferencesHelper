@@ -155,6 +155,14 @@ public class PreferencesHelper {
         return getStringList(key, new ArrayList<String>());
     }
 
+    public void setOnSharedPreferencesChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
+    }
+
+    public void removeOnSharedPreferencesChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener);
+    }
+
     String convertBytesToHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (Byte item: bytes) {
